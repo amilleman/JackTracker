@@ -1,0 +1,32 @@
+### DIAPERS
+
+GET http://localhost:3000/diapers
+
+###
+
+GET http://localhost:3000/diapers/today
+
+
+###
+
+POST http://localhost:3000/diapers
+content-type: application/json
+
+{
+  "Type": "Pee",
+  "Details": "Diaper Details"
+}
+
+### FEED TYPES
+
+POST http://localhost:3000/feedTypes
+content-type: application/json
+
+{
+  "Type": "Chicken + Sweet Potatoes"
+}
+
+### 
+
+GET http://localhost:3000/feedTypes
+
