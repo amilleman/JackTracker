@@ -26,9 +26,9 @@ router.get('/today', async (req, res) => {
 })
 
 //GETTING ONE
-// router.get('/:id', getSubscriberById, (req, res) => {
-//   res.json(res.subscriber);
-// })
+router.get('/:id', getDiaperById, (req, res) => {
+  res.json(res.diaper);
+})
 
 //creating one
 router.post('/',  async (req, res) => {
@@ -72,18 +72,18 @@ router.post('/',  async (req, res) => {
 //   }
 // })
 
-// async function getDiaperById(req, res, next){
-//   let diaper
-//   try {
-//     diaper = await Diaper.findById(req.params.id)
-//     if(diaper == null){
-//       return res.status(404).json({ message: 'Could not find diaper with given id'})
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message })
-//   }
-//   res.diaper = diaper
-//   next()
-// }
+async function getDiaperById(req, res, next){
+  let diaper
+  try {
+    diaper = await Diaper.findById(req.params.id)
+    if(diaper == null){
+      return res.status(404).json({ message: 'Could not find diaper with given id'})
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+  res.diaper = diaper
+  next()
+}
 
 module.exports = router
