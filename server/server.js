@@ -21,5 +21,9 @@ const feedTypesRouter = require('./routes/feedTypes')
 app.use('/feedTypes', feedTypesRouter)
 const sleepsRouter = require('./routes/sleeps')
 app.use('/sleeps', sleepsRouter)
+const medsRouter = require('./routes/meds')
+app.use('/meds', medsRouter)
+const medTypesRouter = require('./routes/medTypes')
+app.use('/medTypes', medTypesRouter)
 
 app.listen(3000, () => console.log('Server Started'));

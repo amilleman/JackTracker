@@ -6,9 +6,9 @@
     <div v-else-if="submitted">
       <Success>
         <template v-slot:header>
-          <i class="fas fa-utensils"></i>
+          <i class="fas fa-prescription-bottle-alt"></i>
         </template>
-          Medication Logged Successfully
+          Dose Logged Successfully
         <div class="pt-2">
           <b-button @click="load()">Return to Meds</b-button>
         </div>
@@ -31,6 +31,7 @@
               <b-col md="8" xl="6" class="pb-3">
                 <MedVitCard 
                   :medVitObj="postMedVitObj"
+                  :medVitOptions="medVitTypes"
                 />
               </b-col>
             </b-row>
@@ -50,8 +51,8 @@
             </b-row>
           </b-col>
           <b-col md="6" xl="4">
-            <div v-if="todaysDoses">
-              <InfoTable :details="this.todaysDoses" :dynamicFields="this.dynamicFields">Feeds</InfoTable>
+            <div v-if="todaysDoses.length > 0">
+              <InfoTable :details="this.todaysDoses" :dynamicFields="this.dynamicFields">Doses</InfoTable>
             </div>
           </b-col>
         </b-row>
@@ -70,7 +71,7 @@
           </b-col>
           <b-col md="8" xl="4" class="pb-5">
             <DisplayTypes
-              :types="solidsTypes"
+              :types="medVitTypes"
             />
           </b-col>
         </b-row>
@@ -163,7 +164,8 @@ import * as _medVitService from '../services/medService';
       },
       getMedVitTypes(){
         _medVitService.getMedVitTypes(res => {
-          this.solidsTypes = res.data;
+          this.typeToAdd = null;
+          this.medVitTypes = res.data;
           this.loading = false
         })
       },

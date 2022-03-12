@@ -24,6 +24,8 @@
                 v-model="medVitObj.medVitType" 
                 :options="medVitOptions" 
                 id="_medVitType"
+                value-field="Type"
+                text-field="Type"
               >
                 <template #first>
                   <b-form-select-option value="" disabled>Select an Option</b-form-select-option>
@@ -38,8 +40,8 @@
               <label for="_medVitAmount">Amount:</label>
             </b-col>
             <b-col>
-              <b-input-group append="oz">
-                <b-form-input v-model="medVitObj.medVitAmount" type="number" id="_medVitAmount"></b-form-input>
+              <b-input-group append="mL">
+                <b-form-input v-model="medVitObj.doseAmount" type="number" id="_medVitAmount"></b-form-input>
               </b-input-group>
             </b-col>
           </b-row>
@@ -54,7 +56,7 @@
                 id="_medVitDetails"
                 type="text"
                 v-model="medVitObj.medVitDetails"
-                placeholder="Anything noteworthy about the bottle..?"
+                placeholder="Anything noteworthy about the dose..?"
                 rows="5"
               ></b-form-textarea>
             </b-col>
@@ -69,18 +71,16 @@
 export default {
   data() {
     return {
-      medVitCardVisible: true,
-      medVitOptions: [
-        { value: 'medVit', text: 'medVit' },
-        { value: 'medVit + Oats', text: 'medVit + Oats' },
-        { value: 'medVit + Barley', text: 'medVit + Barley' },
-        { value: 'Formula', text: 'Formula' }
-      ]
+      medVitCardVisible: true
     }
   },
   props: {
     medVitObj: {
       type: Object,
+      default: null
+    },
+    medVitOptions: {
+      type: Array,
       default: null
     }
   }
