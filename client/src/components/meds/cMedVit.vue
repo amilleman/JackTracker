@@ -1,0 +1,88 @@
+<template>
+  <div>
+    <b-card>
+      <template #header>
+        <b-row align-v="center">
+          <b-col cols="8">
+            <h6 class="mb-0">Meds/Vitamin</h6>
+          </b-col>
+          <b-col cols="3" offset="1"> 
+            <b-button v-if="medVitCardVisible" v-b-toggle.medVit-body size="sm">Hide</b-button>
+            <b-button v-else v-b-toggle.medVit-body size="sm" variant="primary">Show</b-button>
+          </b-col>
+        </b-row>
+      </template>
+      <b-collapse v-model="medVitCardVisible" id="medVit-body">
+        <div class="pb-2">
+          <b-row align-v="top">
+            <b-col cols="4">
+              <label for="_medVitType">Type:</label>
+            </b-col>
+            <b-col>
+              <b-form-select 
+                class="w-100"
+                v-model="medVitObj.medVitType" 
+                :options="medVitOptions" 
+                id="_medVitType"
+              >
+                <template #first>
+                  <b-form-select-option value="" disabled>Select an Option</b-form-select-option>
+                </template>
+              </b-form-select>
+            </b-col>
+          </b-row>
+        </div>
+        <div class="pb-2">
+          <b-row align-v="top">
+            <b-col cols="4">
+              <label for="_medVitAmount">Amount:</label>
+            </b-col>
+            <b-col>
+              <b-input-group append="oz">
+                <b-form-input v-model="medVitObj.medVitAmount" type="number" id="_medVitAmount"></b-form-input>
+              </b-input-group>
+            </b-col>
+          </b-row>
+        </div>
+        <div class="pb-2">
+          <b-row align-v="top">
+            <b-col cols="4">
+              <label for="_medVitDetails">Details:</label>
+            </b-col>
+            <b-col>
+              <b-form-textarea
+                id="_medVitDetails"
+                type="text"
+                v-model="medVitObj.medVitDetails"
+                placeholder="Anything noteworthy about the bottle..?"
+                rows="5"
+              ></b-form-textarea>
+            </b-col>
+          </b-row>
+        </div>
+      </b-collapse>
+    </b-card>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      medVitCardVisible: true,
+      medVitOptions: [
+        { value: 'medVit', text: 'medVit' },
+        { value: 'medVit + Oats', text: 'medVit + Oats' },
+        { value: 'medVit + Barley', text: 'medVit + Barley' },
+        { value: 'Formula', text: 'Formula' }
+      ]
+    }
+  },
+  props: {
+    medVitObj: {
+      type: Object,
+      default: null
+    }
+  }
+}
+</script>

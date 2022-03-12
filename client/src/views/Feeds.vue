@@ -58,7 +58,7 @@
           </b-col>
           <b-col md="6" xl="4">
             <div v-if="todaysFeeds.length > 0">
-              <InfoTable :details="this.todaysFeeds" />
+              <InfoTable :details="this.todaysFeeds" :dynamicFields="this.dynamicFields">Feeds</InfoTable>
             </div>
           </b-col>
         </b-row>
@@ -88,15 +88,20 @@
 </template>
 
 <script>
-import InfoTable from '../components/shared/cTodayInfoTable.vue'
+import InfoTable from '../components/shared/cDynamicTable.vue'
 import DisplayTypes from '../components/shared/cDisplayTypes.vue'
 import MilkCard from '../components/feeds/cFeedMilk.vue'
 import SolidsCard from '../components/feeds/cFeedSolids.vue'
 import Success from '../components/shared/Success.vue';
+import * as _feedService from '../services/feedService';
   export default {
     components: { InfoTable, Success, MilkCard, SolidsCard, DisplayTypes },
     data() {
       return {
+        dynamicFields: [
+          {key: 'Type'},
+          {key: 'CreatedModifiedAt', label: 'When', type: 'timeString'}
+        ],
         loading: false,
         submitted: false,
         posting: false,
@@ -126,51 +131,55 @@ import Success from '../components/shared/Success.vue';
         this.posting = true;
 
         if(postMilk && postSolids){
-          this.axios.all([
-            this.axios.post(`http://localhost:3000/feeds`, {
-              Type: this.postMilkObj.milkType,
-              Amount: this.postMilkObj.milkAmount,
-              Details: this.postMilkObj.milkDetails
-            }), 
-            this.axios.post(`http://localhost:3000/feeds`, {
-              Type: this.postSolidsObj.solidsType,
-              Amount: this.postSolidsObj.solidsAmount,
-              Details: this.postSolidsObj.solidsDetails
-            })
-          ])
-          .then(this.axios.spread((data1, data2) => {
-            // output of req.
-            console.log('data1', data1, 'data2', data2)
-          }))
-          .catch(err => console.log(err))
-          .finally(() => {
-            this.submitted = true;
-            this.posting = false;
-          });     
-        }else if(postMilk){
-          this.axios.post(`http://localhost:3000/feeds`, {
+          let solidsResolved = false;
+          let milkResolved = false;
+          
+          _feedService.postFeed({
             Type: this.postMilkObj.milkType,
             Amount: this.postMilkObj.milkAmount,
             Details: this.postMilkObj.milkDetails
-          })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-            .finally(() => {
+          }, res => {
+            console.log(res);
+            milkResolved = true;
+            if(solidsResolved){
               this.submitted = true;
               this.posting = false;
-            }); 
-        }else{
-          this.axios.post(`http://localhost:3000/feeds`, {
+            }
+          })
+
+          _feedService.postFeed({
             Type: this.postSolidsObj.solidsType,
             Amount: this.postSolidsObj.solidsAmount,
             Details: this.postSolidsObj.solidsDetails
-          })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-            .finally(() => {
+          }, res => {
+            console.log(res);
+            solidsResolved = true;
+            if(milkResolved){
               this.submitted = true;
               this.posting = false;
-            }); 
+            }
+          })
+
+        }else if(postMilk){
+          _feedService.postFeed({
+            Type: this.postMilkObj.milkType,
+            Amount: this.postMilkObj.milkAmount,
+            Details: this.postMilkObj.milkDetails
+          }, res => {
+            console.log(res);
+            this.submitted = true;
+            this.posting = false;
+          })
+        }else{
+          _feedService.postFeed({
+            Type: this.postSolidsObj.solidsType,
+            Amount: this.postSolidsObj.solidsAmount,
+            Details: this.postSolidsObj.solidsDetails
+          }, res => {
+            console.log(res);
+            this.submitted = true;
+            this.posting = false;
+          })
         }
       },
       setCard(val){
@@ -202,43 +211,22 @@ import Success from '../components/shared/Success.vue';
           solidsAmount: 0
         }
         this.todaysFeeds = [];
-        this.axios.get('http://localhost:3000/feeds/today')
-          .then(response => {
-            console.log(response.data)
-            this.todaysFeeds = response.data
-          })
-          .catch(err => console.log(err))
-          .finally(() => {
-            this.loading = false
-          });  
+        _feedService.getDailyFeeds(res => {
+          this.todaysFeeds = res.data;
+          this.loading = false;
+        })
       },
       getSolidsTypes(){
-        this.axios.get('http://localhost:3000/feedTypes')
-          .then(response => {
-            console.log(response.data)
-            this.solidsTypes = response.data;
-            // let emptyItem = {
-            //   Type: ''
-            // }
-            // this.solidsTypes.splice(0, 0, emptyItem);
-          })
-          .catch(err => console.log(err))
-          .finally(() => {
-            this.loading = false
-          }); 
+        _feedService.getFeedTypes(res => {
+          this.solidsTypes = res.data;
+          this.loading = false
+        })
       },
       addFoodType(){
-        this.axios.post('http://localhost:3000/feedTypes', {
-          Type: this.typeToAdd
-        })
-          .then(response => {
-            this.typeToAdd = null;
-            console.log(response.data)
-            this.getSolidsTypes();
-          })
-          .catch(err => console.log(err))
-          .finally(() => {
-          });         
+        _feedService.postFeedType({typeToAdd: this.typeToAdd}, res => {
+          console.log(res);
+          this.getSolidsTypes();
+        })  
       }
     }
   }

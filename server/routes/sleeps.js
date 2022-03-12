@@ -23,12 +23,12 @@ router.get('/current', async (req, res) => {
 })
 
 //GETTING TODAY
-
 router.get('/today', async (req, res) => {
   try {
     var now = new Date();
     var startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const sleeps = await Sleep.find({StartedAt: {$gte: startOfToday}}).sort({ StartedAt: 'desc' });
+    var startOfTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const sleeps = await Sleep.find({StartedAt: {"$gte": startOfToday, "$lte": startOfTomorrow}}).sort({ StartedAt: 'desc' });
     res.json(sleeps);
   } catch (err) {
     res.status(500).json({ message: err.message })

@@ -5,6 +5,7 @@ import VueAxios from 'vue-axios';
 
 // import _ from 'lodash';
 import moment from 'moment';
+Vue.prototype.moment = moment;
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import router from './router'

@@ -1,7 +1,8 @@
 import Diapers from './views/Diapers.vue'
 import DiaperDetails from './views/Diapers/Details.vue'
 import Home from './views/Home.vue'
-import Naps from './views/Naps.vue'
+import Sleeps from './views/Sleeps.vue'
+import SleepDetails from './views/Sleeps/Details.vue'
 import Feeds from './views/Feeds.vue'
 import FeedDetails from './views/Feeds/Details.vue'
 import Meds from './views/Meds.vue'
@@ -47,8 +48,14 @@ const routes = [
   },
   {
     path: '/sleepy-jack',
-    name: 'Naps',
-    component: Naps
+    name: 'Sleeps',
+    component: Sleeps
+  },
+  {
+    path: '/sleep-details',
+    name: 'Sleeps-Details',
+    component: SleepDetails,
+    props: true
   },
   {
     path: '/jack-reports',

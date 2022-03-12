@@ -8,6 +8,18 @@ let callGet = (url, callback) => {
   //.finally()
 }
 
+let callPatch = (url, params, callback) => {
+  console.log(url);
+  console.log(JSON.stringify(params));
+  axios.patch(url, JSON.stringify(params), {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => callback(res))
+  .catch(err => callback(err))
+}
+
 let callPost = (url, params, callback) => {
   axios.post(url, JSON.stringify(params), {
     headers: {
@@ -18,4 +30,4 @@ let callPost = (url, params, callback) => {
   .catch(err => callback(err))
 }
 
-export { callGet, callPost };
+export { callGet, callPost, callPatch };

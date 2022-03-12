@@ -11,7 +11,7 @@
             <b-nav-item :to="{ name: 'Home'}"><i class="far fa-list-alt fa-lg"></i></b-nav-item>
             <b-nav-item :to="{ name: 'Diapers'}"><i class="fas fa-toilet fa-lg"></i></b-nav-item>
             <b-nav-item :to="{ name: 'Feeds'}"><i class="fas fa-utensils fa-lg"></i></b-nav-item>
-            <b-nav-item :to="{ name: 'Naps'}"><i class="fas fa-bed fa-lg"></i></b-nav-item>
+            <b-nav-item :to="{ name: 'Sleeps'}"><i class="fas fa-bed fa-lg"></i></b-nav-item>
             <b-nav-item :to="{ name: 'Meds'}"><i class="fas fa-prescription-bottle-alt fa-lg"></i></b-nav-item>
           </b-navbar-nav>
         </b-collapse>

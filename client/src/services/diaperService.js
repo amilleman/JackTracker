@@ -8,6 +8,12 @@ export let getDailyDiapers = (callback) => {
   });
 }
 
+export let getDiaperById = (id, callback) => {
+  _coreService.callGet(diaper_url + id, res => {
+    return callback(res);
+  });
+}
+
 export let postDiaper = (data, callback) => {
   let postParams = {
     Type: data.Type,

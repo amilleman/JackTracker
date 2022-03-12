@@ -25,9 +25,9 @@ router.get('/today', async (req, res) => {
 })
 
 //GETTING ONE
-// router.get('/:id', getSubscriberById, (req, res) => {
-//   res.json(res.subscriber);
-// })
+router.get('/:id', getFeedById, (req, res) => {
+  res.json(res.feed);
+})
 
 //creating one
 router.post('/',  async (req, res) => {
@@ -72,18 +72,18 @@ router.post('/',  async (req, res) => {
 //   }
 // })
 
-// async function getDiaperById(req, res, next){
-//   let diaper
-//   try {
-//     diaper = await Diaper.findById(req.params.id)
-//     if(diaper == null){
-//       return res.status(404).json({ message: 'Could not find diaper with given id'})
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message })
-//   }
-//   res.diaper = diaper
-//   next()
-// }
+async function getFeedById(req, res, next){
+  let feed
+  try {
+    feed = await Feed.findById(req.params.id)
+    if(feed == null){
+      return res.status(404).json({ message: 'Could not find feed with given id'})
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+  res.feed = feed
+  next()
+}
 
 module.exports = router
