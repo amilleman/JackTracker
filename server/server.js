@@ -25,5 +25,9 @@ const medsRouter = require('./routes/meds')
 app.use('/meds', medsRouter)
 const medTypesRouter = require('./routes/medTypes')
 app.use('/medTypes', medTypesRouter)
+const temperatureReadingsRouter = require('./routes/temperatureReadings')
+app.use('/temperatures', temperatureReadingsRouter)
+const eventsRouter = require('./routes/events')
+app.use('/events', eventsRouter)
 
 app.listen(3000, () => console.log('Server Started'));

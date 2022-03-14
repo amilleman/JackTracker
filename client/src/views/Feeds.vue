@@ -100,7 +100,8 @@ import * as _feedService from '../services/feedService';
       return {
         dynamicFields: [
           {key: 'Type'},
-          {key: 'CreatedModifiedAt', label: 'When', type: 'timeString'}
+          {key: 'CreatedModifiedAt', label: 'When', type: 'timeString'},
+          {key: 'Details'}
         ],
         loading: false,
         submitted: false,

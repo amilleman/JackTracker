@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>Today's <slot></slot>:</h4>
+    <h4><slot></slot>:</h4>
     <b-table 
       striped 
       outlined 
@@ -15,6 +15,12 @@
           <div v-if="moment(data.value, moment.ISO_8601, true).isValid()">
             <div v-if="field.type == 'timeString'">
               {{ formatTime(data.value) }}
+            </div>
+            <div v-else-if="field.type == 'dateString'">
+              {{ formatDate(data.value) }}
+            </div>
+            <div v-else-if="field.type == 'dateTimeString'">
+              {{ formatDateTime(data.value) }}
             </div>
             <div v-else-if="field.type == 'fromNow'">
               {{ data.value | fromNow }}
@@ -38,11 +44,7 @@
 import * as _utility from '../../utility/common'
 export default {  
   data: () => ({
-    fields: [
-      {
-        key: 'Details'
-      }
-    ]
+    fields: []
   }),
   created(){
     this.dynamicFields.forEach(element => {
@@ -61,6 +63,12 @@ export default {
     },
     formatTime(val){ 
       return _utility.formatTime(val);
+    },
+    formatDate(val){ 
+      return _utility.formatDate(val);
+    },
+    formatDateTime(val){ 
+      return _utility.formatDate(val) + " " + _utility.formatTime(val);
     }
   }
 }

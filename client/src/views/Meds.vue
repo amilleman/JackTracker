@@ -76,6 +76,36 @@
           </b-col>
         </b-row>
       </div>
+      <div v-if="logTemperature">
+        <b-row>
+          <b-col md="6" xl="4">
+            <b-row>
+              <b-col md="6" class="px-4"> 
+                <b-row>
+                  <b-form-input v-model="temperature" type="number" id="_addTemperature" placeholder="Temperature"></b-form-input>
+                </b-row>
+                <b-row class="py-2">
+                  <b-form-textarea
+                    id="_temperatureDetails"
+                    type="text"
+                    v-model="temperatureDetails"
+                    placeholder="Any details about the fever..?"
+                    rows="5"
+                  ></b-form-textarea>
+                </b-row>
+              </b-col>
+              <b-col class="pb-2">
+                <b-button variant="success" @click="postTemperatureReading()" :disabled="!temperature">Add Temp Reading</b-button>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col md="8" xl="4" class="pb-5">
+            <div v-if="this.todaysTemps.length > 0">
+              <InfoTable :details="this.todaysTemps" :dynamicFields="this.dynamicFieldsTemp">Temperatures</InfoTable>
+            </div>
+          </b-col>
+        </b-row>
+      </div>
       
     </div>
   </b-container>   
@@ -91,24 +121,35 @@ import * as _medVitService from '../services/medService';
     components: { InfoTable, Success, MedVitCard, DisplayTypes },
     data() {
       return {
+        //general data
         dynamicFields: [
           {key: 'Type'},
           {key: 'CreatedModifiedAt', label: 'When', type: 'fromNow'}
         ],
+        dynamicFieldsTemp: [
+          {key: 'Temperature'},
+          {key: 'CreatedModifiedAt', label: 'When', type: 'timeString'}
+        ],
         loading: false,
         submitted: false,
         posting: false,
+        //medVit
+        addMedVitaminDosage: true,
         postMedVitObj: {
           medVitType: null,
           medVitDetails: null,
           doseAmount: 0
         },
-        medVitTypes: null,
         todaysDoses: null,
-        addMedVitaminDosage: true,
+        //medvit options
         editOptions: false,
+        medVitTypes: null,
+        typeToAdd: null,
+        //temperatures
         logTemperature: false,
-        typeToAdd: null
+        todaysTemps: null,
+        temperature: null,
+        temperatureDetails: null
       }
     },
     created(){
@@ -140,6 +181,7 @@ import * as _medVitService from '../services/medService';
             this.editOptions = true;
             break;
           case 'logTemperature':
+            this.getTodaysTemperatures();
             this.logTemperature = true;
             break;
           default:
@@ -174,6 +216,22 @@ import * as _medVitService from '../services/medService';
           console.log(res);
           this.getMedVitTypes();
         })  
+      },
+      getTodaysTemperatures(){
+        this.todaysTemps = [];
+        _medVitService.getDailyTemperatureReadings(res => {
+          this.todaysTemps = res.data;
+        })        
+      },
+      postTemperatureReading(){
+        _medVitService.postTemperatureReading(
+          {Temperature: this.temperature,
+           Details: this.temperatureDetails}, res => {
+            console.log(res.data);
+            this.getTodaysTemperatures();
+            this.temperature = null;
+            this.temperatureDetails = null;
+          });
       }
     }
   }
