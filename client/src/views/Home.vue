@@ -17,7 +17,7 @@
     <div v-else>
       <!-- Modal button -->
       <div class="py-2">
-        <b-button v-b-modal.addEventModal variant="success">Add Event</b-button>
+        <b-button v-b-modal.addEventModal variant="success">Add Event <i class="fas fa-plus pl-2"></i></b-button>
       </div>
       <!-- Modal -->
       <b-modal 
